@@ -2,6 +2,7 @@ var express = require('express'),
     mysql = require('mysql'),
     Q = require('Q'),
     response = require('./response'),
+    util = require('./util'),
     bodyParser = require('body-parser');
 
 var app = express(),
@@ -11,7 +12,15 @@ var app = express(),
       password : 'root',
       database : 'word_log'
     }),
-    _query = Q.denodeify(connection.query.bind(connection));
+    _query = function() {
+      var deferred = Q.defer(),
+          args = util.toArray(arguments);
+      connection.query.apply(connection, args.concat(function(err, result) {
+	if (err) { deferred.reject(err); return; }
+	deferred.resolve(result);
+      }));
+      return deferred.promise;
+    };
 
 // MySQL connection
 connection.connect(function(err) {
@@ -28,7 +37,6 @@ app.use(bodyParser());
 // Get word list
 app.get('/word/list', function(req, res) {
   _query('SELECT * FROM word ORDER BY id DESC LIMIT 50').done(function(rows) {
-//console.log(rows);
     res.send(response.success(rows));
   });
 });
@@ -39,22 +47,20 @@ app.post('/word', function(req, res) {
       snip = req.param('snip'),
       practice = req.param('example');
 
-  connection.query('SELECT * FROM word where word = ?', [word], function(err, result) {
-    var id;
-    if (result.length>0) {
-      id = result.shift().id;
-    } else {
-        connection.query('INSERT INTO `word` SET ?', { word : word }, function(err, result) {
-	  id = result.insertId;
-	});
-    }
+  _query('SELECT * FROM word where word = ?', [word]).then(function(result) {
 
-/*
-        connection.query('INSERT INTO `reference` SET ?', { word : word }, function(err, result) {
-	  id = result.insertId;
+    (result.length>0 && Q(result.shift().id)
+     || _query('INSERT INTO `word` SET ?', { word : word }).then(function(result) {
+	  // New word
+	  return result.insertId;
+	})
+    ).then(function(wid) {
+      console.log(wid);
+/*      _query('INSERT INTO `reference` SET ?', { word_id : wid }, function(err, result) {
+	id = result.insertId;*/
+//	res.send(response.success(results));
 	});
-*/
-    //res.send(response.success(results));
+    });
   });
 });
 

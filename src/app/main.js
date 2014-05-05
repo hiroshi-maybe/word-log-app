@@ -42,27 +42,46 @@ app.get('/word/list', function(req, res) {
 });
 // Post word
 app.post('/word', function(req, res) {
-  var word = req.param('word'),
-      ref = req.param('ref'),
-      snip = req.param('snip'),
+  var word     = req.param('word'),
+      resource = req.param('resource'),
+      snip     = req.param('snip'),
       practice = req.param('example');
 
-  _query('SELECT * FROM word where word = ?', [word]).then(function(result) {
-
-    (result.length>0 && Q(result.shift().id)
-     || _query('INSERT INTO `word` SET ?', { word : word }).then(function(result) {
-	  // New word
-	  return result.insertId;
-	})
-    ).then(function(wid) {
-      console.log(wid);
-/*      _query('INSERT INTO `reference` SET ?', { word_id : wid }, function(err, result) {
-	id = result.insertId;*/
-//	res.send(response.success(results));
-	});
+  Q.all([
+    selectOrInsertWord(word),
+    selectOrInsertResource(resource)
+  ]).spread(function(wid, rid) {
+    _query('INSERT INTO `reference` SET ?', {
+      word_id     : wid,
+      resource_id : rid,
+      snippet     : snip,
+      practice    : practice
+    }, function(err, result) {
+      id = result.insertId;
+      res.send(response.success(id));
     });
   });
 });
 
+var selectOrInsertWord = function(word) {
+  return _query('SELECT * FROM word where word = ?', [word])
+  .then(function(_word) {
+    return (_word.length>0 && Q(_word.shift().id))
+     || _query('INSERT INTO `word` SET ?', { word : word }).then(function(result) {
+	  // New word inserted
+	  return result.insertId;
+	});
+  });
+};
+var selectOrInsertResource = function(resource) {
+  return  _query('SELECT * FROM resource where name = ?', [resource])
+  .then(function(_resource) {
+    return (_resource.length>0 && Q(_resource.shift().id))
+     || _query('INSERT INTO `resource` SET ?', { name : resource }).then(function(result) {
+	  // New resource inserted
+	  return result.insertId;
+	});
+  });
+};
 
 app.listen(8080);

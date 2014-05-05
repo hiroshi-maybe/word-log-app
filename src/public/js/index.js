@@ -3,7 +3,7 @@
     var $words_wrap = $("#word_list_wrap"),
         $words_ls = $("#word_list"),
         $word_input = $("#word_input"),
-        $ref_input = $("#ref_input"),
+        $res_input = $("#res_input"),
         $snip_input = $("#snippet_input"),
         $prac_input = $("#prac_input");
 
@@ -18,7 +18,7 @@
       if (word.length<1) { return; }
       $.post("word", {
 	"word" : word,
-	"ref"  : $ref_input.val(),
+	"resource"  : $res_input.val(),
 	"snip" : $snip_input.val(),
 	"example" : $prac_input.val()
       })

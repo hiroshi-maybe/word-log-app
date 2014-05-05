@@ -1,6 +1,6 @@
 var express = require('express'),
     mysql = require('mysql'),
-    Q = require('Q'),
+    Q = require('q'),
     response = require('./response'),
     util = require('./util'),
     bodyParser = require('body-parser');

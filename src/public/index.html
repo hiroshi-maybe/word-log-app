@@ -1,0 +1,19 @@
+<html>
+<title>Word logs</title>
+<body>
+<input id="word_input" type="text"></input><button id="search">Apply</button>
+<div id="ref_input_wrap" class="hidden">
+  <table id="ref_input_tbl">
+    <tr><td>Reference:</td><td><input id="ref_input" type="text" size="128"></input></td></tr>
+    <tr><td>Snippet:</td><td><textarea id="snippet_input" cols="120" rows="4"></textarea></td></tr>
+    <tr><td>Example:</td><td><input id="practice_input" type="text" size="128"></input></td></tr>
+  </table>
+  <button id="post_reference">POST</button>
+</div>
+<div id="word_list_wrap">
+  <ul id="word_list"></ul>
+</div>
+</body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="./js/index.js"></script>
+</html>

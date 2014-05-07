@@ -5,7 +5,7 @@
         $word_input = $("#word_input"),
         $res_input = $("#res_input"),
         $snip_input = $("#snippet_input"),
-        $prac_input = $("#prac_input");
+        $prac_input = $("#practice_input");
 
     $("#search").click(function() {
       var word = $word_input.val();

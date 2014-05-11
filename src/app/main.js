@@ -40,6 +40,34 @@ app.get('/word/list', function(req, res) {
     res.send(response.success(rows));
   });
 });
+
+// Get word detail
+app.get('/word/r', function(req, res) {
+  var wid = req.param('word_id');
+  Q.all([
+    _query('SELECT * FROM word WHERE id = ?', wid),
+    _query('SELECT * FROM reference WHERE word_id = ?', wid)
+  ]).spread(function(w, refs) {
+    var word = w.shift().word,
+        resources = util.unique(util.pluck(refs, "resource_id"));
+    _query('SELECT * FROM resource WHERE id IN (?)', resources).done(function(resources) {
+      var resources = util.toHash(resources, "id");
+      resources = refs.reduce(function(resources, ref) {
+	var resource = resources[ref.resource_id];
+	if (resource.references == null) {
+	  resource.references = [];
+	}
+	resource.references.push(ref);
+	return resources;
+      }, resources);
+      res.send(response.success({
+	word : word,
+	resources : resources
+      }));
+    });
+  });
+});
+
 // Post word
 app.post('/word', function(req, res) {
   var word     = req.param('word'),

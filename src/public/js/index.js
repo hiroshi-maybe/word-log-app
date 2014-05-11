@@ -23,6 +23,8 @@
 	"example" : $prac_input.val()
       })
 	.done(function(res) {
+	  $prac_input.val("");
+	  alert("post success");
 	  console.log(res);
 	});
     });

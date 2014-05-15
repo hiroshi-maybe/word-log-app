@@ -70,10 +70,10 @@ app.get('/word/r', function(req, res) {
 
 // Post word
 app.post('/word', function(req, res) {
-  var word     = req.param('word'),
-      resource = req.param('resource'),
-      snip     = req.param('snip'),
-      practice = req.param('example');
+  var word     = req.param('word').trim(),
+      resource = req.param('resource').trim(),
+      snip     = req.param('snip').trim(),
+      practice = req.param('example').trim();
 
   Q.all([
     selectOrInsertWord(word),

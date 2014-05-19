@@ -1,0 +1,12 @@
+{
+  "version": "0.0.0",
+  "private": true,
+  "name": "word-log-app",
+  "description": "A Web application logging words to support memorization",
+  "repository": "https://github.com/k-ori/word-log-app",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "scripts": {
+  }
+}

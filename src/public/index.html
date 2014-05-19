@@ -1,7 +1,11 @@
-<html>
-<title>Word logs</title>
-<body>
-<input id="word_input" type="text"></input><button id="search">Apply</button>
+<!doctype html>
+<html lang="en" ng-app="wordLogApp">
+<head>
+  <meta charset="utf-8">
+  <title>Word logs</title>
+</head>
+<body ng-controller="wordListCtrl">
+<input ng-model="new_word"><button id="search" ng-click="lookup_dic()">Apply</button>
 <div id="ref_input_wrap" class="hidden">
   <table id="ref_input_tbl">
     <tr><td>Resource:</td><td><input id="res_input" type="text" size="128"></input></td></tr>
@@ -11,9 +15,15 @@
   <button id="post_reference">POST</button>
 </div>
 <div id="word_list_wrap">
-  <ul id="word_list"></ul>
+  <ul id="word_list">
+    <li ng-repeat="w in words">
+      <span>{{w.word}}</span>
+    </li>
+  </ul>
 </div>
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script src="./js/index.js"></script>
+<!--<script src="./js/index.js"></script>-->
+<script src="./js/ng/controllers.js"></script>
 </html>

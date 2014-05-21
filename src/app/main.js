@@ -70,10 +70,14 @@ app.get('/word/r', function(req, res) {
 
 // Post word
 app.post('/word', function(req, res) {
-  var word     = req.param('word').trim(),
-      resource = req.param('resource').trim(),
-      snip     = req.param('snip').trim(),
-      practice = req.param('example').trim();
+  var word     = req.param('word', "").trim(),
+      resource = req.param('resource', "").trim(),
+      snip     = req.param('snip', "").trim(),
+      practice = req.param('example', "").trim();
+
+  if (word.length<1 || resource.length<1) {
+    res.send(response.error("Word and Resource required"));
+  }
 
   Q.all([
     selectOrInsertWord(word),

@@ -5,15 +5,15 @@
   <title>Word logs</title>
 </head>
 <body ng-controller="wordListCtrl">
-<form novalidate>
-  <input ng-model="ref.word" required><button ng-click="lookup_dic(ref.word)">Lookup</button>
+<form name="form">
+  <input name="word" ng-model="ref.word" required><button ng-click="lookup_dic(ref.word)">Lookup</button>
   <div id="ref_input_wrap" class="hidden">
     <table id="ref_input_tbl">
-      <tr><td>Resource:</td><td><input size="128" ng-model="ref.resource" required></td></tr>
-      <tr><td>Snippet:</td><td><textarea ng-model="ref.snip" cols="120" rows="4" required></textarea></td></tr>
-      <tr><td>Example:</td><td><input ng-model="ref.example" type="text" size="128"></input></td></tr>
+      <tr><td>Resource:</td><td><input name="resource" size="128" ng-model="ref.resource" required></td></tr>
+      <tr><td>Snippet:</td><td><textarea name="snip" ng-model="ref.snip" cols="120" rows="4" required></textarea></td></tr>
+      <tr><td>Example:</td><td><input name="example" ng-model="ref.example" type="text" size="128"></input></td></tr>
     </table>
-    <button ng-click="post(ref)">POST</button>
+    <button ng-click="post(ref)" ng-disabled="form.$invalid">POST</button>
 </form>
 </div>
 <div id="word_list_wrap">

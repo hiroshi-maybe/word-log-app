@@ -19,6 +19,11 @@ app.controller('wordListCtrl', function($scope, $http) {
       url: "word",
       data: ref
     }).then(function(res) {
+      res = res.data;
+      if (res.result=="error") {
+	alert(res.data.message);
+	return;
+      }
       $scope.ref.word="";
       $scope.ref.example="";
       alert("post success");

@@ -5,8 +5,11 @@
   "description": "A Web application logging words to support memorization",
   "repository": "https://github.com/k-ori/word-log-app",
   "license": "MIT",
-  "devDependencies": {
-  },
-  "scripts": {
+  "devDependencies": {},
+  "scripts": {},
+  "dependencies": {
+    "express": "^4.14.0",
+    "mysql": "^2.11.1",
+    "q": "^1.4.1"
   }
 }
